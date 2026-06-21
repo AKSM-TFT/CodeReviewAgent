@@ -17,7 +17,7 @@ def _review(diff: str, prompt: str) -> list:
             ]
         )
         raw = response.choices[0].message.content
-        return raw.splitlines()
+        return [line for line in raw.splitlines() if line.strip()]
     except Exception as e:
         return []
 
