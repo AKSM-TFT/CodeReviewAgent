@@ -1,7 +1,8 @@
 from langgraph.graph import StateGraph, END
 from agent.state import ReviewState
 from agent.router import route_after_fetch
-from agent.nodes.fetch_diff import fetch_diff
+from agent.nodes import fetch_diff, classify, reviewers, aggregate, post_comment
+
 
 def build_graph():
     g = StateGraph(ReviewState)
@@ -9,9 +10,9 @@ def build_graph():
     # register nodes
     g.add_node("fetch_diff", fetch_diff)
     g.add_node("classify", classify)
-    g.add_node("review_logic", review_logic)
-    g.add_node("review_security", review_security)
-    g.add_node("review_style", review_style)
+    g.add_node("review_logic", reviewers.review_logic)
+    g.add_node("review_security", reviewers.review_security)
+    # g.add_node("review_style", review_style)
     g.add_node("aggregate", aggregate)
     g.add_node("post_comment", post_comment)
 
@@ -24,7 +25,7 @@ def build_graph():
     # fan-out from classify
     g.add_edge("classify", "review_logic")
     g.add_edge("classify", "review_security")
-    g.add_edge("classify", "review_style")
+    # g.add_edge("classify", "review_style")
 
     # fan-in to aggregate
     g.add_edge(["review_logic", "review_security", "review_style"], "aggregate")
