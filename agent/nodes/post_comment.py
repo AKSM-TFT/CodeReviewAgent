@@ -4,7 +4,7 @@ import os
 import httpx
 
 GITHUB_API = "https://api.github.com"
-load_dotenv()
+load_dotenv(override=True)
 
 def post_comment(state: ReviewState) -> dict:
     pr_url = state["pr_url"]
